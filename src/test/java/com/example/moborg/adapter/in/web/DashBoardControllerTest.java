@@ -34,4 +34,19 @@ public class DashBoardControllerTest {
                 .hasSize(1);
         
     }
+    @Test
+    public void scheludeNewHuddleResultsInHuddleCreatedInRepository() throws Exception{
+
+        HuddleRepositoryInMemoryImpl huddleRepository = new HuddleRepositoryInMemoryImpl();
+        HuddleService huddleService = new HuddleService(huddleRepository);
+
+        DashBoardController dashBoardController = new DashBoardController(huddleService);
+
+        String pageName = dashBoardController.scheludeHuddle(new ScheludeHuddleForm("Name", "2021-04-30",""));
+
+        assertThat(pageName)
+                .isEqualTo("redirect:/dashboard");
+        assertThat(huddleRepository.findAll())
+                .hasSize(1);
+    }
 }

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Controller
@@ -25,6 +27,7 @@ public class DashBoardController {
 
         List<HuddleSummary> huddleSummary = HuddleSummary.from(huddles);
         model.addAttribute("huddles", huddleSummary);
+        model.addAttribute("scheludeHuddleForm", new ScheludeHuddleForm());
         return "dashboard";
     }
 
@@ -35,5 +38,12 @@ public class DashBoardController {
                 "90 minutes", "Blackjack", 4);
         model.addAttribute("huddle", huddleDetailView);
         return "huddle-detail";
+    }
+
+    @PostMapping("/schelude")
+    public String scheludeHuddle(ScheludeHuddleForm scheludeHuddleForm) {
+        ZonedDateTime dateTime= ZonedDateTime.now(); //TODO Impl
+        huddleService.scheludeHuddle(scheludeHuddleForm.name(), dateTime);
+        return "redirect:/dashboard";
     }
 }
